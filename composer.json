@@ -1,0 +1,33 @@
+{
+    "name": "cypresslab/di-debugger-bundle",
+    "type": "symfony-bundle",
+    "description": "A Symfony2 bundle to check for dic configuration.",
+    "keywords": [ "dic", "dependency injection", "debug" ],
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Matteo Giachino",
+            "email": "matteog@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/console": "~2.1",
+        "symfony/dependency-injection": "~2.1"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
+    },
+    "autoload": {
+        "psr-0": { "Cypress\\DiDebuggerBundle": "" }
+    },
+    "target-dir": "Cypress/DiDebuggerBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
