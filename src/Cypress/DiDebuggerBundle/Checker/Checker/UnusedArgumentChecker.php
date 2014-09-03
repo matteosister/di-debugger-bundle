@@ -46,8 +46,12 @@ class UnusedArgumentChecker implements Checker
      */
     private function isNotUsed($argName)
     {
-        $regExp = "#\$this->$argName#";
-        return preg_match_all(preg_quote($regExp), $this->fileContent) < 2;
+        $count = preg_match_all(
+            preg_quote("#\$this->$argName#"),
+            $this->fileContent,
+            $matches
+        );
+        return $count < 2;
     }
 
     /**
