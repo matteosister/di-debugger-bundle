@@ -21,7 +21,10 @@
         "phpspec/phpspec": "~2.0"
     },
     "autoload": {
-        "psr-0": { "Cypress\\DiDebuggerBundle": "src" }
+        "psr-0": {
+            "Cypress\\DiDebuggerBundle": "src",
+            "spec": ""
+        }
     },
     "target-dir": "Cypress/DiDebuggerBundle",
     "extra": {

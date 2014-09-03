@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <!-- arguments count -->
         <service id="correct" class="\DateTime" />
         <service id="wrong_class" class="NonExistentClass" />
+        <service id="service1" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service1" />
+        <service id="service2" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service1">
+            <argument>arg</argument>
+        </service>
+        <service id="service3" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service1">
+            <argument>arg</argument>
+            <argument>arg</argument>
+        </service>
+        <service id="service4" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service1" />
+        <!--arguments used-->
+        <service id="service5" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service2">
+            <argument>arg</argument>
+        </service>
+        <service id="service6" class="spec\Cypress\DiDebuggerBundle\Checker\Services\Service3">
+            <argument>arg</argument>
+            <argument>arg</argument>
+        </service>
     </services>
 </container>

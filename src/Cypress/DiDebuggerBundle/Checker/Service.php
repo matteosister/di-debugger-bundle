@@ -3,8 +3,6 @@
 namespace Cypress\DiDebuggerBundle\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\Checker;
-use Cypress\DiDebuggerBundle\Exception\NonExistentClassException;
-use Cypress\DiDebuggerBundle\Exception\NonExistentServiceException;
 use PhpCollection\Sequence;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,6 +31,9 @@ class Service implements ServiceDescriptor
      */
     private $containerBuilder;
 
+    /**
+     * class constructor
+     */
     public function __construct()
     {
         $this->checkers = new Sequence();
@@ -57,6 +58,9 @@ class Service implements ServiceDescriptor
         return $this;
     }
 
+    /**
+     * @param Checker $checker
+     */
     public function addChecker(Checker $checker)
     {
         $this->checkers->add($checker);
@@ -96,9 +100,6 @@ class Service implements ServiceDescriptor
         return $this->container->has($this->serviceName);
     }
 
-    /**
-     * @throws NonExistentServiceException
-     */
     public function check()
     {
         $this->checkers->sortWith($this->checkersSorter());

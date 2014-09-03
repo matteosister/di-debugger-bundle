@@ -2,8 +2,11 @@
 
 namespace spec\Cypress\DiDebuggerBundle\Checker;
 
+use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ExistenceChecker;
+use Cypress\DiDebuggerBundle\Checker\Checker\UnusedArgumentChecker;
+use Cypress\DiDebuggerBundle\Exception\UnusedArgument;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,6 +19,8 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->addChecker(new ClassChecker());
         $this->addChecker(new ExistenceChecker());
+        $this->addChecker(new ArgumentsCountChecker());
+        $this->addChecker(new UnusedArgumentChecker());
         $container->getParameter('debug.container.dump')->willReturn(__DIR__.'/Resources/container.xml');
         $container->has('non_existent')->willReturn(false);
         $container->has(Argument::any())->willReturn(true);
@@ -50,6 +55,52 @@ class ServiceSpec extends ObjectBehavior
         $this->setServiceName('wrong_class');
         $this
             ->shouldThrow('Cypress\DiDebuggerBundle\Exception\NonExistentClassException')
+            ->duringCheck();
+    }
+
+    function it_should_throw_an_exception_with_wrong_constructor_arguments_count()
+    {
+        $this->setServiceName('service1');
+        $this
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\WrongConstructorCountArguments')
+            ->duringCheck();
+    }
+
+    function it_should_work_with_correct_constructor_arguments()
+    {
+        $this->setServiceName('service2');
+        $this->check()->shouldReturn(null);
+    }
+
+    function it_should_throw_an_exception_with_more_constructor_arguments_count()
+    {
+        $this->setServiceName('service3');
+        $this
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyConstructorCountArguments')
+            ->duringCheck();
+    }
+
+    function it_should_throw_an_exception_with_less_constructor_arguments_count()
+    {
+        $this->setServiceName('service4');
+        $this
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments')
+            ->duringCheck();
+    }
+
+    function it_should_throw_an_exception_if_the_argument_is_not_used()
+    {
+        $this->setServiceName('service5');
+        $this
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgument')
+            ->duringCheck();
+    }
+
+    function it_should_throw_an_exception_if_one_argument_is_not_used()
+    {
+        $this->setServiceName('service6');
+        $this
+            ->shouldThrow(new UnusedArgument('arg2'))
             ->duringCheck();
     }
 }
