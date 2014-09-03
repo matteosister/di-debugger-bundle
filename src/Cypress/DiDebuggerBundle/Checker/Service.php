@@ -110,7 +110,7 @@ class Service implements ServiceDescriptor
     }
 
     /**
-     * @return callable
+     * @return \Closure
      */
     public function checkersSorter()
     {
