@@ -102,9 +102,10 @@ class Service implements ServiceDescriptor
     public function check()
     {
         $this->checkers->sortWith($this->checkersSorter());
-        $this->checkers->map(function (Checker $checker) {
+        /** @var Checker $checker */
+        foreach ($this->checkers as $checker) {
             $checker->check($this);
-        });
+        }
     }
 
     /**
