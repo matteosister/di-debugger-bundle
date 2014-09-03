@@ -7,6 +7,10 @@ use Cypress\DiDebuggerBundle\Exception\NonExistentClassException;
 
 class ClassChecker implements Checker
 {
+    /**
+     * @param ServiceDescriptor $serviceDescriptor
+     * @throws NonExistentClassException
+     */
     public function check(ServiceDescriptor $serviceDescriptor)
     {
         if (! class_exists($serviceDescriptor->getDefinition()->getClass())) {
