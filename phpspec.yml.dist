@@ -1,0 +1,6 @@
+suites:
+    di_debugger:
+        src_path: .
+        formatter.name: pretty
+
+formatter.name: dot
