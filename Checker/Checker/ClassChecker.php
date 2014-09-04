@@ -13,9 +13,28 @@ class ClassChecker implements Checker
      */
     public function check(ServiceDescriptor $serviceDescriptor)
     {
-        if (! class_exists($serviceDescriptor->getDefinition()->getClass())) {
-            throw new NonExistentClassException;
+        $definition = $serviceDescriptor->getDefinition();
+        $class = $serviceDescriptor->getDefinition()->getClass();
+        $factoryClass = $serviceDescriptor->getDefinition()->getFactoryClass();
+        if (interface_exists($class) && is_null($factoryClass)) {
+            return;
+        } else {
+            if (! class_exists($class)) {
+                if ($this->is)
+                throw new NonExistentClassException(
+                    sprintf('the class %s for the service %s does not exists', $class, $serviceDescriptor->getServiceName())
+                );
+            }
         }
+    }
+
+    /**
+     * @param $name
+     * @return int
+     */
+    public function isParameter($name)
+    {
+        return preg_match('/\%.*\%/', $name);
     }
 
     /**

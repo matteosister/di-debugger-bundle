@@ -15,7 +15,8 @@
         "phpcollection/phpcollection": "~0.4",
         "symfony/console": "~2.1",
         "symfony/dependency-injection": "~2.1",
-        "symfony/config": "~2.1"
+        "symfony/config": "~2.1",
+        "symfony/framework-bundle": "~2.1"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0"

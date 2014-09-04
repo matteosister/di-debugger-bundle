@@ -4,6 +4,6 @@ namespace Cypress\DiDebuggerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DiDebuggerBundle extends Bundle
+class CypressDiDebuggerBundle extends Bundle
 {
 }

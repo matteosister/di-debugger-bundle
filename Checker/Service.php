@@ -64,6 +64,7 @@ class Service implements ServiceDescriptor
     public function addChecker(Checker $checker)
     {
         $this->checkers->add($checker);
+        $this->checkers->sortWith($this->checkersSorter());
     }
 
     /**
@@ -101,11 +102,18 @@ class Service implements ServiceDescriptor
     }
 
     /**
+     * @return string
+     */
+    public function getServiceName()
+    {
+        return $this->serviceName;
+    }
+
+    /**
      * do the check
      */
     public function check()
     {
-        $this->checkers->sortWith($this->checkersSorter());
         /** @var Checker $checker */
         foreach ($this->checkers as $checker) {
             $checker->check($this);

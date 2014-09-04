@@ -8,6 +8,11 @@ use Symfony\Component\DependencyInjection\Definition;
 interface ServiceDescriptor
 {
     /**
+     * @return string
+     */
+    public function getServiceName();
+
+    /**
      * @return ContainerBuilder
      */
     public function getContainerBuilder();
