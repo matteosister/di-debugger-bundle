@@ -3,6 +3,7 @@
 namespace Cypress\DiDebuggerBundle\Checker;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 
 interface ServiceDescriptor
@@ -11,6 +12,11 @@ interface ServiceDescriptor
      * @return string
      */
     public function getServiceName();
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer();
 
     /**
      * @return ContainerBuilder

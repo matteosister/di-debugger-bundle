@@ -14,7 +14,9 @@ class ExistenceChecker implements Checker
     public function check(ServiceDescriptor $serviceDescriptor)
     {
         if (! $serviceDescriptor->exists()) {
-            throw new NonExistentServiceException;
+            throw new NonExistentServiceException(
+                sprintf('the service %s do not exists', $serviceDescriptor->getServiceName())
+            );
         }
     }
 

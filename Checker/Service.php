@@ -110,6 +110,14 @@ class Service implements ServiceDescriptor
     }
 
     /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
      * do the check
      */
     public function check()

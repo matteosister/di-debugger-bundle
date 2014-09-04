@@ -13,18 +13,32 @@ class ClassChecker implements Checker
      */
     public function check(ServiceDescriptor $serviceDescriptor)
     {
+        if ($serviceDescriptor->getContainerBuilder()->hasAlias($serviceDescriptor->getServiceName())) {
+            return;
+        }
         $definition = $serviceDescriptor->getDefinition();
         $class = $serviceDescriptor->getDefinition()->getClass();
+        if ($this->isParameter($class)) {
+            $class = $serviceDescriptor->getContainer()->getParameter(trim($class, '%'));
+        }
         $factoryClass = $serviceDescriptor->getDefinition()->getFactoryClass();
+        if ($this->isParameter($factoryClass)) {
+            $factoryClass = $serviceDescriptor->getContainer()->getParameter(trim($factoryClass, '%'));
+        }
+        if (is_null($class) && is_null($factoryClass)) {
+            return;
+        }
         if (interface_exists($class) && is_null($factoryClass)) {
             return;
-        } else {
-            if (! class_exists($class)) {
-                if ($this->is)
-                throw new NonExistentClassException(
-                    sprintf('the class %s for the service %s does not exists', $class, $serviceDescriptor->getServiceName())
-                );
-            }
+        }
+        if (interface_exists($class) && class_exists($factoryClass)) {
+            return;
+        }
+        if (! class_exists($class)) {
+            var_dump($definition);die;
+            throw new NonExistentClassException(
+                sprintf('the class %s for the service %s does not exists', $class, $serviceDescriptor->getServiceName())
+            );
         }
     }
 
@@ -34,7 +48,10 @@ class ClassChecker implements Checker
      */
     public function isParameter($name)
     {
-        return preg_match('/\%.*\%/', $name);
+        if (false !== preg_match('/%.+%/', $name, $matches)) {
+            return 1 == count($matches);
+        }
+        throw new \RuntimeException('There was an error finding out if %s is a parameter. This should be reported');
     }
 
     /**

@@ -16,4 +16,14 @@ class ClassCheckerSpec extends ObjectBehavior
     {
         $this->shouldImplement('Cypress\DiDebuggerBundle\Checker\Checker\Checker');
     }
+
+    function it_should_find_a_param()
+    {
+        $this->isParameter('%ss%')->shouldReturn(true);
+        $this->isParameter('%s.s%')->shouldReturn(true);
+        $this->isParameter('%s.s.s%')->shouldReturn(true);
+        $this->isParameter('ss%')->shouldReturn(false);
+        $this->isParameter('')->shouldReturn(false);
+        $this->isParameter('%%')->shouldReturn(false);
+    }
 }

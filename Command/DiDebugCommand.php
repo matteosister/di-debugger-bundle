@@ -3,6 +3,7 @@
 namespace Cypress\DiDebuggerBundle\Command;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
+use Cypress\DiDebuggerBundle\Checker\Checker\ExistenceChecker;
 use Cypress\DiDebuggerBundle\Checker\Service;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,7 @@ class DiDebugCommand extends ContainerAwareCommand
     {
         $this->serviceChecker = new Service();
         $this->serviceChecker->addChecker(new ClassChecker());
+        $this->serviceChecker->addChecker(new ExistenceChecker());
         $this->serviceChecker->setContainer($this->getContainer());
         $output->writeln('<info>Debugging container...</info>');
     }
