@@ -100,6 +100,9 @@ class Service implements ServiceDescriptor
         return $this->container->has($this->serviceName);
     }
 
+    /**
+     * do the check
+     */
     public function check()
     {
         $this->checkers->sortWith($this->checkersSorter());
