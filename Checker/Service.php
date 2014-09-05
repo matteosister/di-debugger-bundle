@@ -118,6 +118,14 @@ class Service implements ServiceDescriptor
     }
 
     /**
+     * @return bool
+     */
+    public function isAlias()
+    {
+        return $this->getContainerBuilder()->hasAlias($this->getServiceName());
+    }
+
+    /**
      * do the check
      */
     public function check()

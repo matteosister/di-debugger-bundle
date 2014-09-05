@@ -19,13 +19,13 @@ class UnusedArgumentChecker implements Checker
     private $fileContent;
 
     /**
-     * @param ServiceDescriptor $serviceDescriptor
+     * @param ServiceDescriptor $sd
      * @throws UnusedArgument
      * @return void
      */
-    public function check(ServiceDescriptor $serviceDescriptor)
+    public function check(ServiceDescriptor $sd)
     {
-        $refl = new \ReflectionClass($serviceDescriptor->getDefinition()->getClass());
+        $refl = new \ReflectionClass($sd->getDefinition()->getClass());
         $filename = $refl->getFileName();
         if (false === $filename) {
             return;

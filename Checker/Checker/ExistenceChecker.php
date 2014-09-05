@@ -8,14 +8,17 @@ use Cypress\DiDebuggerBundle\Exception\NonExistentServiceException;
 class ExistenceChecker implements Checker
 {
     /**
-     * @param ServiceDescriptor $serviceDescriptor
+     * @param ServiceDescriptor $sd
      * @throws NonExistentServiceException
      */
-    public function check(ServiceDescriptor $serviceDescriptor)
+    public function check(ServiceDescriptor $sd)
     {
-        if (! $serviceDescriptor->exists()) {
+        if (! $sd->exists()) {
+            /*var_dump($serviceDescriptor->getServiceName());
+            var_dump($serviceDescriptor->getContainerBuilder()->get($serviceDescriptor->getServiceName()));
+            die;*/
             throw new NonExistentServiceException(
-                sprintf('the service %s do not exists', $serviceDescriptor->getServiceName())
+                sprintf('the service %s do not exists', $sd->getServiceName())
             );
         }
     }

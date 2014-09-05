@@ -32,4 +32,9 @@ interface ServiceDescriptor
      * @return bool
      */
     public function exists();
+
+    /**
+     * @return bool
+     */
+    public function isAlias();
 }
