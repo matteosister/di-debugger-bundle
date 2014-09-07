@@ -16,7 +16,6 @@ class ClassChecker extends BaseChecker implements Checker
         if ($sd->isAlias()) {
             return;
         }
-        $definition = $sd->getDefinition();
         $class = $sd->getDefinition()->getClass();
         if ($this->isParameter($class)) {
             $class = $sd->getContainer()->getParameter(trim($class, '%'));
