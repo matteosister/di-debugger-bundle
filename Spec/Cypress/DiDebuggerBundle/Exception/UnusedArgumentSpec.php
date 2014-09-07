@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Exception;
+namespace Spec\Cypress\DiDebuggerBundle\Exception;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NonExistentServiceExceptionSpec extends ObjectBehavior
+class UnusedArgumentSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Cypress\DiDebuggerBundle\Exception\NonExistentServiceException');
+        $this->shouldHaveType('Cypress\DiDebuggerBundle\Exception\UnusedArgument');
     }
 
     function it_extends_exception()

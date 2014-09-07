@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Checker;
+namespace Spec\Cypress\DiDebuggerBundle\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Exception;
+namespace Spec\Cypress\DiDebuggerBundle\Exception;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

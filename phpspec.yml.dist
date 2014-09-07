@@ -1,6 +1,8 @@
 suites:
     di_debugger:
+        namespace: Cypress\DiDebuggerBundle
         src_path: .
         formatter.name: pretty
+        spec_prefix: Spec
 
 formatter.name: dot

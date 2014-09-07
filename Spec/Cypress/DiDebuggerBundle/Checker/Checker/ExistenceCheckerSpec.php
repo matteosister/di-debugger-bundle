@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Checker\Checker;
+namespace Spec\Cypress\DiDebuggerBundle\Checker\Checker;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

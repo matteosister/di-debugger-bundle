@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Checker\Services;
+namespace Spec\Cypress\DiDebuggerBundle\Checker\Services;
 
 class Service2
 {

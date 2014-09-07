@@ -16,7 +16,9 @@
         "symfony/console": "~2.1",
         "symfony/dependency-injection": "~2.1",
         "symfony/config": "~2.1",
-        "symfony/framework-bundle": "~2.1"
+        "symfony/framework-bundle": "~2.1",
+        "phpunit/phpunit": "~4.2",
+        "mockery/mockery": "@stable"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0"
@@ -24,7 +26,8 @@
     "autoload": {
         "psr-0": {
             "Cypress\\DiDebuggerBundle": "",
-            "spec": ""
+            "Spec": "",
+            "Test": ""
         }
     },
     "target-dir": "Cypress/DiDebuggerBundle",

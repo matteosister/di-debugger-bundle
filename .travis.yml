@@ -21,5 +21,6 @@ before_script:
 
 script:
   - bin/phpspec run
+  - bin/phpunit
 
   
