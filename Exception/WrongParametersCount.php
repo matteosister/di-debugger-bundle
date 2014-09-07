@@ -18,7 +18,8 @@ class WrongParametersCount extends DiDebuggerException
     protected $classDefinedArguments;
 
     /**
-     * @param mixed $classDefinedArguments
+     * @param array $containerDefinedArguments
+     * @param \ReflectionParameter[] $classDefinedArguments
      */
     public function setArguments($containerDefinedArguments, $classDefinedArguments)
     {
