@@ -62,7 +62,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service1');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\WrongConstructorCountArguments')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\WrongParametersCount')
             ->duringCheck();
     }
 
@@ -76,7 +76,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service3');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyConstructorCountArguments')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyParameters')
             ->duringCheck();
     }
 
@@ -84,7 +84,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service4');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParameters')
             ->duringCheck();
     }
 

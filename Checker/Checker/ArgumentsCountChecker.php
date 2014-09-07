@@ -11,7 +11,9 @@ namespace Cypress\DiDebuggerBundle\Checker\Checker;
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
 use Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments;
+use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
 use Cypress\DiDebuggerBundle\Exception\TooManyConstructorCountArguments;
+use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
 
 class ArgumentsCountChecker extends BaseChecker implements Checker
 {
@@ -70,8 +72,6 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param $factoryService
      * @throws NonExistentFactoryMethodException
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
      */
     private function checkFactoryService(ServiceDescriptor $sd, $factoryService)
     {
@@ -89,21 +89,19 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param array $definitionArguments
      * @param \ReflectionParameter[] $methodParameters
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
      */
     private function compare(ServiceDescriptor $sd, $definitionArguments, $methodParameters) {
         $min = array_reduce($methodParameters, function ($min, \ReflectionParameter $parameter) {
             return $parameter->isOptional() ? $min : $min + 1;
         });
         if (count($definitionArguments) > count($methodParameters)) {
-            $e = new TooFewConstructorCountArguments();
+            $e = new TooManyParameters();
             $e->setServiceDescriptor($sd);
             $e->setArguments($definitionArguments, $methodParameters);
             throw $e;
         }
         if (count($definitionArguments) < $min) {
-            throw new TooManyConstructorCountArguments("", 0, null, $sd);
+            throw new TooFewParameters();
         }
     }
 

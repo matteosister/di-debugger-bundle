@@ -5,7 +5,7 @@ namespace Cypress\DiDebuggerBundle\Exception;
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Exception;
 
-class WrongConstructorCountArguments extends DiDebuggerException
+class WrongParametersCount extends DiDebuggerException
 {
     /**
      * @var array
