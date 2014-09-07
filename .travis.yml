@@ -20,6 +20,6 @@ before_script:
   - $(which php) composer.phar --dev install
 
 script:
-  - bin/phpspec run --format=pretty
+  - bin/phpspec run
 
   
