@@ -53,7 +53,7 @@ class ServiceCollection
      */
     public function check()
     {
-        $exceptions = [];
+        $exceptions = array();
         foreach ($this->serviceChecker->getContainerBuilder()->getServiceIds() as $serviceId) {
             $this->serviceChecker->setServiceName($serviceId);
             try {
