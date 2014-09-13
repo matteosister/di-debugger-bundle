@@ -13,13 +13,17 @@ use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 interface Checker
 {
     /**
-     * @param ServiceDescriptor $sd
      * @return void
      */
-    public function check(ServiceDescriptor $sd);
+    public function check();
 
     /**
      * @return int
      */
     public function getOrder();
+
+    /**
+     * @param ServiceDescriptor $serviceDescriptor
+     */
+    public function setServiceDescriptor(ServiceDescriptor $serviceDescriptor);
 }

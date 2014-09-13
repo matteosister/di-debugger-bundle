@@ -11,7 +11,7 @@ namespace Cypress\DiDebuggerBundle\Checker\Checker;
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\UnusedArgument;
 
-class UnusedArgumentChecker implements Checker
+class UnusedArgumentChecker extends BaseChecker implements Checker
 {
     /**
      * @var string
@@ -19,13 +19,12 @@ class UnusedArgumentChecker implements Checker
     private $fileContent;
 
     /**
-     * @param ServiceDescriptor $sd
      * @throws UnusedArgument
      * @return void
      */
-    public function check(ServiceDescriptor $sd)
+    public function check()
     {
-        $refl = new \ReflectionClass($sd->getDefinition()->getClass());
+        $refl = new \ReflectionClass($this->sd->getDefinition()->getClass());
         $filename = $refl->getFileName();
         if (false === $filename) {
             return;

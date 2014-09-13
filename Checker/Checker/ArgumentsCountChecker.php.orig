@@ -18,7 +18,6 @@ use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
 class ArgumentsCountChecker extends BaseChecker implements Checker
 {
     /**
-     * @param ServiceDescriptor $sd
      * @throws TooFewConstructorCountArguments
      * @throws TooManyConstructorCountArguments
      * @return void
@@ -72,8 +71,6 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param $factoryService
      * @throws NonExistentFactoryMethodException
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
      */
     private function checkFactoryService(ServiceDescriptor $sd, $factoryService)
     {
@@ -91,8 +88,6 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param array $definitionArguments
      * @param \ReflectionParameter[] $methodParameters
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
      */
     private function compare(ServiceDescriptor $sd, $definitionArguments, $methodParameters) {
         $min = array_reduce($methodParameters, function ($min, \ReflectionParameter $parameter) {
@@ -105,10 +100,14 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
             throw $e;
         }
         if (count($definitionArguments) < $min) {
-            $e = new TooFewParameters();
+<<<<<<< Updated upstream
+            throw new TooFewParameters();
+=======
+            $e = new TooFewConstructorCountArguments();
             $e->setServiceDescriptor($sd);
             $e->setArguments($definitionArguments, $methodParameters);
             throw $e;
+>>>>>>> Stashed changes
         }
     }
 

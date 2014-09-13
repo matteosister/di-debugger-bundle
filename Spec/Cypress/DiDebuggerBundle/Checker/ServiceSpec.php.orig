@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Cypress\DiDebuggerBundle\Checker;
+namespace Spec\Cypress\DiDebuggerBundle\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
@@ -62,7 +62,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service1');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParameters')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\WrongParametersCount')
             ->duringCheck();
     }
 
@@ -76,7 +76,11 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service3');
         $this
+<<<<<<< Updated upstream:Spec/Cypress/DiDebuggerBundle/Checker/ServiceSpec.php
             ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyParameters')
+=======
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments')
+>>>>>>> Stashed changes:spec/Cypress/DiDebuggerBundle/Checker/ServiceSpec.php
             ->duringCheck();
     }
 

@@ -15,8 +15,19 @@ class ClassChecker extends BaseChecker implements Checker
         if ($this->sd->isAlias()) {
             return;
         }
+<<<<<<< Updated upstream
+        $class = $sd->getDefinition()->getClass();
+        if ($this->isParameter($class)) {
+            $class = $sd->getContainer()->getParameter(trim($class, '%'));
+        }
+        $factoryClass = $sd->getDefinition()->getFactoryClass();
+        if ($this->isParameter($factoryClass)) {
+            $factoryClass = $sd->getContainer()->getParameter(trim($factoryClass, '%'));
+        }
+=======
         $class = $this->getRealClassName($this->sd->getDefinition()->getClass());
         $factoryClass = $this->getRealClassName($this->sd->getDefinition()->getFactoryClass());
+>>>>>>> Stashed changes
         if (is_null($class) && is_null($factoryClass)) {
             return;
         }

@@ -132,7 +132,8 @@ class Service implements ServiceDescriptor
     {
         /** @var Checker $checker */
         foreach ($this->checkers as $checker) {
-            $checker->check($this);
+            $checker->setServiceDescriptor($this);
+            $checker->check();
         }
     }
 

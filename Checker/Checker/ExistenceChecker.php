@@ -5,20 +5,19 @@ namespace Cypress\DiDebuggerBundle\Checker\Checker;
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\NonExistentServiceException;
 
-class ExistenceChecker implements Checker
+class ExistenceChecker extends BaseChecker implements Checker
 {
     /**
-     * @param ServiceDescriptor $sd
      * @throws NonExistentServiceException
      */
-    public function check(ServiceDescriptor $sd)
+    public function check()
     {
-        if (! $sd->exists()) {
+        if (! $this->sd->exists()) {
             /*var_dump($serviceDescriptor->getServiceName());
             var_dump($serviceDescriptor->getContainerBuilder()->get($serviceDescriptor->getServiceName()));
             die;*/
             throw new NonExistentServiceException(
-                sprintf('the service %s do not exists', $sd->getServiceName())
+                sprintf('the service %s do not exists', $this->sd->getServiceName())
             );
         }
     }

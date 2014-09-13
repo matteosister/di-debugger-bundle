@@ -14,6 +14,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class BaseChecker
 {
     /**
+     * @var ServiceDescriptor
+     */
+    protected $sd;
+
+    /**
+     * @param ServiceDescriptor $serviceDescriptor
+     */
+    public function setServiceDescriptor(ServiceDescriptor $serviceDescriptor)
+    {
+        $this->sd = $serviceDescriptor;
+    }
+
+    /**
      * @param $name
      * @return int
      */
@@ -32,5 +45,20 @@ class BaseChecker
     public function parameterName($marker)
     {
         return trim($marker, '%');
+    }
+
+    /**
+     * return the arg if it's a class
+     * if it's a parameter resolve the parameter name and return the class
+     *
+     * @param $class
+     * @return mixed
+     */
+    public function getRealClassName($class)
+    {
+        if ($this->isParameter($class)) {
+            $class = $this->sd->getContainer()->getParameter(trim($class, '%'));
+        }
+        return $class;
     }
 }
