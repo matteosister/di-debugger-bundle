@@ -18,9 +18,10 @@ use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
 class ArgumentsCountChecker extends BaseChecker implements Checker
 {
     /**
-     * @param ServiceDescriptor $sd
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
+     * @throws NonExistentFactoryMethodException
+     * @throws TooFewParameters
+     * @throws TooManyParameters
+     * @internal param ServiceDescriptor $sd
      * @return void
      */
     public function check()
@@ -51,7 +52,7 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
             return;
         }
         if (is_null($constructor)) {
-            $this->compare($this->sd, $definition->getArguments(), []);
+            $this->compare($this->sd, $definition->getArguments(), array());
         } else {
             $this->compare($this->sd, $definition->getArguments(), $constructor->getParameters());
         }

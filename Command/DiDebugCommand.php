@@ -41,7 +41,7 @@ class DiDebugCommand extends ContainerAwareCommand
     {
         $serviceIds = null;
         if ($serviceName = $input->getArgument('service_name')) {
-            $serviceIds = [$serviceName];
+            $serviceIds = array($serviceName);
         }
         $serviceCollection = new ServiceCollection($this->getContainer(), $serviceIds);
         $serviceCollection->addChecker(new ClassChecker());
