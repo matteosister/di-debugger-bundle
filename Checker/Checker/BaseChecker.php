@@ -9,7 +9,6 @@
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BaseChecker
 {
@@ -31,7 +30,7 @@ class BaseChecker
 
     /**
      * @param $name
-     * @return int
+     * @return boolean
      */
     public function isParameter($name)
     {
@@ -42,7 +41,7 @@ class BaseChecker
     }
 
     /**
-     * @param $marker
+     * @param string|null $marker
      * @return string
      */
     public function parameterName($marker)
@@ -54,7 +53,7 @@ class BaseChecker
      * return the arg if it's a class
      * if it's a parameter resolve the parameter name and return the class
      *
-     * @param $class
+     * @param string|null $class
      * @return mixed
      */
     public function getRealClassName($class)

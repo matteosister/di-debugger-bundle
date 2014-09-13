@@ -2,7 +2,6 @@
 
 namespace Cypress\DiDebuggerBundle\Exception;
 
-use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Exception;
 
 class WrongParametersCount extends DiDebuggerException

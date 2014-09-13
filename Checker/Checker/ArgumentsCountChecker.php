@@ -21,7 +21,6 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @throws NonExistentFactoryMethodException
      * @throws TooFewParameters
      * @throws TooManyParameters
-     * @internal param ServiceDescriptor $sd
      * @return void
      */
     public function check()

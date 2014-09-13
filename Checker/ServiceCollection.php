@@ -9,9 +9,7 @@
 namespace Cypress\DiDebuggerBundle\Checker;
 
 
-use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\Checker;
-use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
 use Cypress\DiDebuggerBundle\Exception\DiDebuggerException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

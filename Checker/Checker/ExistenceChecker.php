@@ -2,7 +2,6 @@
 
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
-use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\NonExistentServiceException;
 
 class ExistenceChecker extends BaseChecker implements Checker
