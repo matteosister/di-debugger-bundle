@@ -31,7 +31,7 @@ class DiDebugCommand extends ContainerAwareCommand
         $this->serviceChecker->addChecker(new ClassChecker());
         $this->serviceChecker->addChecker(new ArgumentsCountChecker());
         $this->serviceChecker->setContainer($this->getContainer());
-        $output->writeln('<info>Debugging container...</info>');
+        $output->writeln('<info>Debugging container</info>');
     }
 
     /**
@@ -47,7 +47,7 @@ class DiDebugCommand extends ContainerAwareCommand
             return;
         }
         foreach ($this->serviceChecker->getContainerBuilder()->getServiceIds() as $serviceId) {
-            //$output->writeln(sprintf('%s', $serviceId));
+            $output->writeln(sprintf('%s', $serviceId));
             $this->serviceChecker->setServiceName($serviceId);
             $this->doCheck($output);
         }

@@ -27,6 +27,9 @@ class DiDebuggerException extends \Exception
         $this->factoryService = $sd->getDefinition()->getFactoryService();
         $this->factoryClass = $sd->getDefinition()->getFactoryClass();
         $this->factoryMethod = $sd->getDefinition()->getFactoryMethod();
-        $this->message = sprintf("--------\nProblem found in <info>%s</info>", $this->serviceName);
+        $this->message = sprintf("--------\nProblem found in service: <info>%s</info>", $this->serviceName);
+        if ($this->class != null) {
+            $this->message .= sprintf("\nclass: <comment>%s</comment>", $this->class);
+        }
     }
 } 

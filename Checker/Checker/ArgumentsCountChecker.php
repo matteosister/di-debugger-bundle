@@ -50,7 +50,11 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
         if (is_null($constructor) && 0 === count($definition->getArguments())) {
             return;
         }
-        $this->compare($this->sd, $definition->getArguments(), $constructor->getParameters());
+        if (is_null($constructor)) {
+            $this->compare($this->sd, $definition->getArguments(), []);
+        } else {
+            $this->compare($this->sd, $definition->getArguments(), $constructor->getParameters());
+        }
     }
 
     /**
@@ -72,8 +76,6 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param $factoryService
      * @throws NonExistentFactoryMethodException
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
      */
     private function checkFactoryService(ServiceDescriptor $sd, $factoryService)
     {
@@ -91,8 +93,8 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param array $definitionArguments
      * @param \ReflectionParameter[] $methodParameters
-     * @throws TooFewConstructorCountArguments
-     * @throws TooManyConstructorCountArguments
+     * @throws TooFewParameters
+     * @throws TooManyParameters
      */
     private function compare(ServiceDescriptor $sd, $definitionArguments, $methodParameters) {
         $min = array_reduce($methodParameters, function ($min, \ReflectionParameter $parameter) {
