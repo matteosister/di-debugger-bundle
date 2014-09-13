@@ -24,6 +24,7 @@ interface Checker
 
     /**
      * @param ServiceDescriptor $serviceDescriptor
+     * @return void
      */
     public function setServiceDescriptor(ServiceDescriptor $serviceDescriptor);
 }

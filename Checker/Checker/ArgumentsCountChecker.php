@@ -18,7 +18,6 @@ use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
 class ArgumentsCountChecker extends BaseChecker implements Checker
 {
     /**
-     * @param ServiceDescriptor $sd
      * @throws TooFewConstructorCountArguments
      * @throws TooManyConstructorCountArguments
      * @return void

@@ -4,7 +4,6 @@ namespace Cypress\DiDebuggerBundle\Command;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
-use Cypress\DiDebuggerBundle\Checker\Checker\ExistenceChecker;
 use Cypress\DiDebuggerBundle\Checker\Service;
 use Cypress\DiDebuggerBundle\Checker\ServiceCollection;
 use Cypress\DiDebuggerBundle\Exception\DiDebuggerException;

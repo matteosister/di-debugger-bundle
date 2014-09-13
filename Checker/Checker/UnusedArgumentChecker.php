@@ -8,7 +8,6 @@
 
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
-use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\UnusedArgument;
 
 class UnusedArgumentChecker extends BaseChecker implements Checker
