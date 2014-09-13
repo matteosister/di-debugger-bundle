@@ -2,6 +2,7 @@
 
 namespace Cypress\DiDebuggerBundle\Checker;
 
+use Cypress\DiDebuggerBundle\Checker\Checker\BaseChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\Checker;
 use PhpCollection\Sequence;
 use Symfony\Component\Config\FileLocator;
@@ -126,6 +127,14 @@ class Service implements ServiceDescriptor
     }
 
     /**
+     * @return bool
+     */
+    public function isSynthetic()
+    {
+        return $this->getDefinition()->isSynthetic();
+    }
+
+    /**
      * do the check
      */
     public function check()
@@ -133,7 +142,9 @@ class Service implements ServiceDescriptor
         /** @var Checker $checker */
         foreach ($this->checkers as $checker) {
             $checker->setServiceDescriptor($this);
-            $checker->check();
+            if (BaseChecker::BLOCK_CHECKS === $checker->check()) {
+                break;
+            }
         }
     }
 

@@ -17,8 +17,8 @@ class ClassChecker extends BaseChecker implements Checker
         }
         $class = $this->getRealClassName($this->sd->getDefinition()->getClass());
         $factoryClass = $this->getRealClassName($this->sd->getDefinition()->getFactoryClass());
-        if (is_null($class) && is_null($factoryClass)) {
-            return;
+        if ($this->sd->isSynthetic()) {
+            return BaseChecker::BLOCK_CHECKS;
         }
         if (interface_exists($class) && is_null($factoryClass)) {
             return;
@@ -27,9 +27,9 @@ class ClassChecker extends BaseChecker implements Checker
             return;
         }
         if (! class_exists($class)) {
-            throw new NonExistentClassException(
-                sprintf('the class %s for the service %s does not exists', $class, $this->sd->getServiceName())
-            );
+            $e = new NonExistentClassException();
+            $e->setServiceDescriptor($this->sd);
+            throw $e;
         }
     }
 

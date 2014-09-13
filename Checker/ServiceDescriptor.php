@@ -37,4 +37,9 @@ interface ServiceDescriptor
      * @return bool
      */
     public function isAlias();
+
+    /**
+     * @return bool
+     */
+    public function isSynthetic();
 }

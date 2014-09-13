@@ -13,6 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BaseChecker
 {
+    const ABSTAIN = 'abstain';
+    const BLOCK_CHECKS = 'block_checks';
+
     /**
      * @var ServiceDescriptor
      */
