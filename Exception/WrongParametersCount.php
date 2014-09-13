@@ -30,6 +30,9 @@ class WrongParametersCount extends DiDebuggerException
             $this->message .= "\nthe container is configured to instantiate the service with <comment>0 parameters</comment>";
         } else {
             array_walk($this->containerDefinedArguments, function (&$value) {
+                if (is_array($value)) {
+                    $value = implode(', ', $value);
+                }
                 $value = '' !== $value ? $value : '<fg=black>empty argument</fg=black>';
             });
             $containerDefinedList = "\n  - ".implode("\n  - ", $this->containerDefinedArguments);

@@ -6,6 +6,8 @@ use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ExistenceChecker;
 use Cypress\DiDebuggerBundle\Checker\Service;
+use Cypress\DiDebuggerBundle\Checker\ServiceCollection;
+use Cypress\DiDebuggerBundle\Exception\DiDebuggerException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,10 +29,6 @@ class DiDebugCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->serviceChecker = new Service();
-        $this->serviceChecker->addChecker(new ClassChecker());
-        $this->serviceChecker->addChecker(new ArgumentsCountChecker());
-        $this->serviceChecker->setContainer($this->getContainer());
         $output->writeln('<info>Debugging container</info>');
     }
 
@@ -41,24 +39,26 @@ class DiDebugCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $serviceIds = null;
         if ($serviceName = $input->getArgument('service_name')) {
-            $this->serviceChecker->setServiceName($serviceName);
-            $this->doCheck($output);
-            return;
+            $serviceIds = [$serviceName];
         }
-        foreach ($this->serviceChecker->getContainerBuilder()->getServiceIds() as $serviceId) {
-            $output->writeln(sprintf('%s', $serviceId));
-            $this->serviceChecker->setServiceName($serviceId);
-            $this->doCheck($output);
+        $serviceCollection = new ServiceCollection($this->getContainer(), $serviceIds);
+        $serviceCollection->addChecker(new ClassChecker());
+        $serviceCollection->addChecker(new ArgumentsCountChecker());
+        $errors = $serviceCollection->check();
+        /** @var DiDebuggerException $error */
+        foreach ($errors as $i => $error) {
+            $output->writeln(
+                str_replace(
+                    DiDebuggerException::SEPARATOR,
+                    DiDebuggerException::SEPARATOR.' error <comment>'.($i + 1).'</comment>',
+                    $error->getMessage()
+                )
+            );
         }
-    }
-
-    protected function doCheck(OutputInterface $output)
-    {
-        try {
-            $this->serviceChecker->check();
-        } catch (\Exception $e) {
-            $output->writeln($e->getMessage());
-        }
+        $output->writeln('');
+        $output->writeln(DiDebuggerException::SEPARATOR);
+        $output->writeln(sprintf('<info>%s</info> errors found', count($errors)));
     }
 } 
