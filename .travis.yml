@@ -17,7 +17,7 @@ branches:
 
 before_script:
   - curl -s https://getcomposer.org/installer | php
-  - $(which php) composer.phar --dev install
+  - $(which php) composer.phar --dev --no-progress --no-interaction install
 
 script:
   - bin/behat --format=progress
