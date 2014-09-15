@@ -60,6 +60,14 @@ class Service implements ServiceDescriptor
     }
 
     /**
+     * @param ContainerBuilder $containerBuilder
+     */
+    public function setContainerBuilder($containerBuilder)
+    {
+        $this->containerBuilder = $containerBuilder;
+    }
+
+    /**
      * @param Checker $checker
      */
     public function addChecker(Checker $checker)

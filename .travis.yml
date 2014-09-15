@@ -20,6 +20,7 @@ before_script:
   - $(which php) composer.phar --dev install
 
 script:
+  - bin/behat --format=progress
   - bin/phpspec run
   - bin/phpunit
 

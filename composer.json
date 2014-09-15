@@ -21,13 +21,15 @@
         "mockery/mockery": "@stable"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~2.0",
+        "behat/behat": "2.4.*@stable"
     },
     "autoload": {
         "psr-0": {
             "Cypress\\DiDebuggerBundle": "",
             "Spec": "",
-            "Test": ""
+            "Test": "",
+            "Behat\\Test": "features/services"
         }
     },
     "target-dir": "Cypress/DiDebuggerBundle",
