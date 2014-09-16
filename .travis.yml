@@ -20,7 +20,6 @@ before_script:
   - $(which php) composer.phar --dev --no-progress --no-interaction install
 
 script:
-  - bin/behat --format=progress
-  - bin/phpspec run
+  - make test
 
   
