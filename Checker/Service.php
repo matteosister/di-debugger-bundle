@@ -55,7 +55,6 @@ class Service implements ServiceDescriptor
     public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
-
         return $this;
     }
 

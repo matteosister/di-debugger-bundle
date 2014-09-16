@@ -29,15 +29,10 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
             return;
         }
         $definition = $this->sd->getDefinition();
-        $class = $definition->getClass();
-        if ($this->isParameter($class)) {
-            $class = $this->sd->getContainer()->getParameter($this->parameterName($class));
-        }
+        $class = $this->getRealClassName($definition->getClass());
         $reflection = new \ReflectionClass($class);
         if (($factoryClass = $definition->getFactoryClass()) !== null) {
-            if ($this->isParameter($factoryClass)) {
-                $factoryClass = $this->sd->getContainer()->getParameter($this->parameterName($factoryClass));
-            }
+            $factoryClass = $this->getRealClassName($factoryClass);
             $this->checkFactoryClass($this->sd, $factoryClass);
             return;
         }
@@ -70,6 +65,8 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
         if (! $reflection->hasMethod($factoryMethod)) {
             throw new NonExistentFactoryMethodException('error, factory method do not esists');
         }
+        $method = $reflection->getMethod($factoryMethod);
+        $this->compare($this->sd, $definition->getArguments(), $method->getParameters());
     }
 
     /**

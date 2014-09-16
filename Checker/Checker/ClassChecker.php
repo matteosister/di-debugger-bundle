@@ -3,6 +3,7 @@
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
 use Cypress\DiDebuggerBundle\Exception\NonExistentClassException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
 
 class ClassChecker extends BaseChecker implements Checker
 {
@@ -27,6 +28,11 @@ class ClassChecker extends BaseChecker implements Checker
         }
         if (! class_exists($class)) {
             $e = new NonExistentClassException();
+            $e->setServiceDescriptor($this->sd);
+            throw $e;
+        }
+        if (! is_null($factoryClass) && ! class_exists($factoryClass)) {
+            $e = new NonExistentFactoryClassException();
             $e->setServiceDescriptor($this->sd);
             throw $e;
         }

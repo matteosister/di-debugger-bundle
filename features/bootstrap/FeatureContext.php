@@ -22,7 +22,7 @@ class FeatureContext extends BehatContext
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    private $container;
+    private $containerBuilder;
 
     /**
      * @var string
@@ -47,9 +47,10 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
-        $this->container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $this->containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
         $this->serviceChecker = new \Cypress\DiDebuggerBundle\Checker\Service();
-        $this->serviceChecker->setContainerBuilder($this->container);
+        $this->serviceChecker->setContainerBuilder($this->containerBuilder);
+        $this->serviceChecker->setContainer($this->containerBuilder);
     }
 
     /**
@@ -73,7 +74,7 @@ class FeatureContext extends BehatContext
 </container>
 EOF;
         file_put_contents($this->containerXmlFile, sprintf($data, $string->getRaw()));
-        $loader = new \Symfony\Component\DependencyInjection\Loader\XmlFileLoader($this->container, new \Symfony\Component\Config\FileLocator(sys_get_temp_dir()));
+        $loader = new \Symfony\Component\DependencyInjection\Loader\XmlFileLoader($this->containerBuilder, new \Symfony\Component\Config\FileLocator(sys_get_temp_dir()));
         $loader->load($this->containerXmlFile);
     }
 
@@ -81,15 +82,16 @@ EOF;
     /**
      * @Given /^I add the "([^"]*)" cheker$/
      */
-    public function iAddTheCheker($arg1)
+    public function iAddTheCheker($class)
     {
-        $this->serviceChecker->addChecker(new $arg1());
+        $className = 'Cypress\\DiDebuggerBundle\\Checker\\Checker\\'.$class;
+        $this->serviceChecker->addChecker(new $className());
     }
 
     /**
-     * @Given /^check the service "([^"]*)"$/
+     * @When /^I check the service "([^"]*)"$/
      */
-    public function checkTheService($serviceName)
+    public function iCheckTheService($serviceName)
     {
         $this->serviceChecker->setServiceName($serviceName);
     }

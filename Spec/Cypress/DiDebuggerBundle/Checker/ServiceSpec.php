@@ -4,7 +4,6 @@ namespace spec\Cypress\DiDebuggerBundle\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
-use Cypress\DiDebuggerBundle\Checker\Checker\ExistenceChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\UnusedArgumentChecker;
 use Cypress\DiDebuggerBundle\Exception\UnusedArgument;
 use PhpSpec\ObjectBehavior;
@@ -18,7 +17,6 @@ class ServiceSpec extends ObjectBehavior
     function let(ContainerInterface $container)
     {
         $this->addChecker(new ClassChecker());
-        $this->addChecker(new ExistenceChecker());
         $this->addChecker(new ArgumentsCountChecker());
         $this->addChecker(new UnusedArgumentChecker());
         $container->getParameter('debug.container.dump')->willReturn(__DIR__.'/Resources/container.xml');
@@ -41,13 +39,6 @@ class ServiceSpec extends ObjectBehavior
     function it_has_a_setContainer_method(ContainerInterface $container)
     {
         $this->setContainer($container)->shouldReturn($this);
-    }
-
-    function it_should_throw_an_exception_with_non_existing_service(ContainerInterface $container)
-    {
-        $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\NonExistentServiceException')
-            ->duringCheck();
     }
 
     function it_should_throw_an_exception_with_non_existing_class(ContainerInterface $container)

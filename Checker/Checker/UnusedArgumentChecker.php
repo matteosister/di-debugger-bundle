@@ -23,7 +23,8 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
      */
     public function check()
     {
-        $refl = new \ReflectionClass($this->sd->getDefinition()->getClass());
+        $className = $this->getRealClassName($this->sd->getDefinition()->getClass());
+        $refl = new \ReflectionClass($className);
         $filename = $refl->getFileName();
         if (false === $filename) {
             return;
