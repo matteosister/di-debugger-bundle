@@ -14,8 +14,6 @@ use Exception;
 
 class DiDebuggerException extends \Exception
 {
-    const SEPARATOR = '--------';
-
     /**
      * @var string
      */
@@ -51,10 +49,6 @@ class DiDebuggerException extends \Exception
         $this->factoryService = $sd->getDefinition()->getFactoryService();
         $this->factoryClass = $sd->getDefinition()->getFactoryClass();
         $this->factoryMethod = $sd->getDefinition()->getFactoryMethod();
-        $this->message = sprintf("\n%s\nProblem found in service: <info>%s</info>", self::SEPARATOR, $this->serviceName);
-        if ($this->class != null) {
-            $this->message .= sprintf("\nclass: <comment>%s</comment>", $this->class);
-        }
     }
 
     /**

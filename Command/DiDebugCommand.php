@@ -50,8 +50,7 @@ class DiDebugCommand extends ContainerAwareCommand
         foreach ($errors as $i => $error) {
             $output->writeln(
                 str_replace(
-                    DiDebuggerException::SEPARATOR,
-                    DiDebuggerException::SEPARATOR.' error <comment>'.($i + 1).'</comment>',
+                    ' error <comment>'.($i + 1).'</comment>',
                     $error->getMessage()
                 )
             );
