@@ -9,6 +9,7 @@
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
 use Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments;
 use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
@@ -63,7 +64,9 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
         $reflection = new \ReflectionClass($factoryClass);
         $factoryMethod = $definition->getFactoryMethod();
         if (! $reflection->hasMethod($factoryMethod)) {
-            throw new NonExistentFactoryMethodException('error, factory method do not esists');
+            $e = new NonExistentFactoryMethodException();
+            $e->setServiceDescriptor($sd);
+            throw $e;
         }
         $method = $reflection->getMethod($factoryMethod);
         $this->compare($this->sd, $definition->getArguments(), $method->getParameters());
@@ -80,7 +83,9 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
         $reflection = new \ReflectionClass($factoryService);
         $factoryMethod = $definition->getFactoryMethod();
         if (! $reflection->hasMethod($factoryMethod)) {
-            throw new NonExistentFactoryMethodException('error, factory method do not esists');
+            $e = new NonExistentFactoryMethodException();
+            $e->setServiceDescriptor($sd);
+            throw $e;
         }
         $method = $reflection->getMethod($factoryMethod);
         $this->compare($sd, $definition->getArguments(), $method->getParameters());

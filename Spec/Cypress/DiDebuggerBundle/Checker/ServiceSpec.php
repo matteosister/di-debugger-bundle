@@ -91,7 +91,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service6');
         $this
-            ->shouldThrow(new UnusedArgument('arg2'))
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgument')
             ->duringCheck();
     }
 }

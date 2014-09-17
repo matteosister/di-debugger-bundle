@@ -34,7 +34,9 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
         /** @var \ReflectionParameter $param */
         foreach ($constr->getParameters() as $param) {
             if ($this->isNotUsed($param->getName())) {
-                throw new UnusedArgument($param->getName());
+                $e = new UnusedArgument();
+                $e->setServiceDescriptor($this->sd);
+                throw $e;
             }
         }
     }

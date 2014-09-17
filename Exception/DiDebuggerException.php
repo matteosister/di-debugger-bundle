@@ -16,12 +16,34 @@ class DiDebuggerException extends \Exception
 {
     const SEPARATOR = '--------';
 
+    /**
+     * @var string
+     */
     protected $serviceName;
+
+    /**
+     * @var string
+     */
     protected $class;
+
+    /**
+     * @var string
+     */
     protected $factoryService;
+
+    /**
+     * @var string
+     */
     protected $factoryClass;
+
+    /**
+     * @var string
+     */
     protected $factoryMethod;
 
+    /**
+     * @param ServiceDescriptor $sd
+     */
     public function setServiceDescriptor(ServiceDescriptor $sd)
     {
         $this->serviceName = $sd->getServiceName();
@@ -34,4 +56,26 @@ class DiDebuggerException extends \Exception
             $this->message .= sprintf("\nclass: <comment>%s</comment>", $this->class);
         }
     }
-} 
+
+    /**
+     * @return Data
+     */
+    public function getData()
+    {
+        return parent::getBaseData();
+    }
+
+    /**
+     * @return Data
+     */
+    protected function getBaseData()
+    {
+        return Data::create(
+            $this->serviceName,
+            $this->class,
+            $this->factoryService,
+            $this->factoryClass,
+            $this->factoryMethod
+        );
+    }
+}
