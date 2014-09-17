@@ -56,7 +56,7 @@ class DiDebuggerException extends \Exception
      */
     public function getData()
     {
-        return parent::getBaseData();
+        return $this->getBaseData();
     }
 
     /**

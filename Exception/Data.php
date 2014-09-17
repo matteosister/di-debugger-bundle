@@ -8,7 +8,6 @@
 
 namespace Cypress\DiDebuggerBundle\Exception;
 
-
 class Data
 {
     /**
@@ -37,6 +36,11 @@ class Data
     private $factoryMethod;
 
     /**
+     * @var
+     */
+    private $otherData;
+
+    /**
      * @param $serviceName
      * @param $class
      * @param $factoryService
@@ -63,6 +67,27 @@ class Data
     public static function create($serviceName, $class, $factoryService, $factoryClass, $factoryMethod)
     {
         return new self($serviceName, $class, $factoryService, $factoryClass, $factoryMethod);
+    }
+
+    /**
+     * @param $name
+     * @param $args
+     */
+    public function __call($name, $args)
+    {
+        if ('get' === substr($name, 0, 3)) {
+            // getter
+            $prop = lcfirst(substr($name, 3));
+            if (!array_key_exists($prop, $this->otherData)) {
+                throw new \InvalidArgumentException(sprintf('There is no %s data', $prop));
+            }
+            return $this->otherData[$prop];
+        }
+        if ('set' === substr($name, 0, 3)) {
+            // setter
+            $prop = lcfirst(substr($name, 3));
+            $this->otherData[$prop] = $args[0];
+        }
     }
 
     /**
