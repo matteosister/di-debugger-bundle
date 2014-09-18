@@ -11,6 +11,7 @@ namespace Cypress\DiDebuggerBundle\Checker\Checker;
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryServiceMethodException;
 use Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments;
 use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
 use Cypress\DiDebuggerBundle\Exception\TooManyConstructorCountArguments;
@@ -75,7 +76,7 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
     /**
      * @param ServiceDescriptor $sd
      * @param $factoryService
-     * @throws NonExistentFactoryMethodException
+     * @throws NonExistentFactoryServiceMethodException
      */
     private function checkFactoryService(ServiceDescriptor $sd, $factoryService)
     {
@@ -83,7 +84,7 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
         $reflection = new \ReflectionClass($factoryService);
         $factoryMethod = $definition->getFactoryMethod();
         if (! $reflection->hasMethod($factoryMethod)) {
-            $e = new NonExistentFactoryMethodException();
+            $e = new NonExistentFactoryServiceMethodException();
             $e->setServiceDescriptor($sd);
             throw $e;
         }

@@ -7,6 +7,10 @@ use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
 use Cypress\DiDebuggerBundle\Checker\Service;
 use Cypress\DiDebuggerBundle\Checker\ServiceCollection;
 use Cypress\DiDebuggerBundle\Exception\DiDebuggerException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentClassException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
+use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryServiceMethodException;
 use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
 use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
 use Cypress\DiDebuggerBundle\Exception\WrongParametersCount;
@@ -18,13 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DiDebugCommand extends ContainerAwareCommand
 {
-    const EMPTY_PARAM = '<fg=black>----</fg=black>';
+    const EMPTY_PARAM = '<error>no parameters</error>';
     const EMPTY_ARGUMENT = '<fg=black>empty string</fg=black>';
-
-    /**
-     * @var Service
-     */
-    private $serviceChecker;
 
     protected function configure()
     {
@@ -32,11 +31,6 @@ class DiDebugCommand extends ContainerAwareCommand
             ->setName('cypress:di:debug')
             ->addArgument('service_name', InputArgument::OPTIONAL, 'check only for the given service');
     }
-
-//    protected function initialize(InputInterface $input, OutputInterface $output)
-//    {
-//        $output->writeln('<info>Debugging container</info>');
-//    }
 
     /**
      * @param InputInterface $input
@@ -55,13 +49,17 @@ class DiDebugCommand extends ContainerAwareCommand
         $errors = $serviceCollection->check();
         /** @var TableHelper $table */
         $table = $this->getHelper('table');
+        $table->setCrossingChar('<fg=red>.</fg=red>');
+        $table->setHorizontalBorderChar('<fg=black>.</fg=black>');
+        $table->setVerticalBorderChar('');
+        $table->setCellHeaderFormat('<fg=blue>%s</fg=blue>');
+        $solution = null;
         /** @var DiDebuggerException $error */
         foreach ($errors as $i => $error) {
             $data = $error->getData();
-            $output->writeln(sprintf('<error>%s</error>', $data->getServiceName()));
-            $output->writeln(sprintf('Class: <comment>%s</comment>', $data->getClass()));
+            $output->writeln(sprintf('<fg=white>SERVICE: <error>%s</error></fg=white>', $data->getServiceName()));
             if ($error instanceof WrongParametersCount) {
-                $table->setHeaders(array('container definition arguments', 'method parameters'));
+                $table->setHeaders(array('container defined arguments', 'service parameters'));
                 $containerDefined = array_map(function ($name) {
                     if (is_array($name)) {
                         return 'arr';
@@ -83,9 +81,45 @@ class DiDebugCommand extends ContainerAwareCommand
                 }
                 $table->setRows($rows);
                 $table->render($output);
+                if ($error instanceof TooManyParameters) {
+                    $solution = sprintf('Change the service definition, remove %s arguments', $data->getDifference());
+                }
+                if ($error instanceof TooFewParameters) {
+                    $solution = sprintf('Change the service definition, add %s arguments', $data->getDifference());
+                }
+            }
+            if ($error instanceof NonExistentClassException) {
+                $solution = 'The class do not exists. Create it!';
+                $output->writeln(sprintf('Class: <comment>%s</comment>', $data->getClass()));
+            }
+            if ($error instanceof NonExistentFactoryClassException) {
+                $solution = 'The factory class do not exists. Create it!';
+                $output->writeln(sprintf('Factory Class: <comment>%s</comment>', $data->getFactoryClass()));
+            }
+            if ($error instanceof NonExistentFactoryMethodException) {
+                $solution = 'The method defined for the factory class do not exists. Implement it!';
+                $output->writeln(sprintf(
+                    'Factory Method: <comment>%s::%s</comment>',
+                    $data->getFactoryClass(),
+                    $data->getFactoryMethod()
+                ));
+            }
+            if ($error instanceof NonExistentFactoryServiceMethodException) {
+                $solution = 'The method defined for the factory service do not exists. Implement it!';
+                $output->writeln(sprintf('Factory Service: <comment>%s</comment>', $data->getFactoryService()));
+                $output->writeln(sprintf('Factory Method: <comment>%s</comment>', $data->getFactoryMethod()));
+            }
+
+            if (!is_null($solution)) {
+                $output->writeln(sprintf('<comment>Solution</comment>: <info>%s</info>', $solution));
             }
             $output->writeln('');
+            $output->writeln('');
         }
-        $output->writeln(sprintf('<info>%s</info> errors found', count($errors)));
+        if (count($errors)) {
+            $output->writeln(sprintf('<info>%s</info> problems found', count($errors)));
+        } else {
+            $output->writeln(sprintf('<info>%s</info> problems found. <info>Well done!</info>', count($errors)));
+        }
     }
 } 
