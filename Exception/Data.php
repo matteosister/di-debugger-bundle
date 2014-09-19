@@ -8,6 +8,13 @@
 
 namespace Cypress\DiDebuggerBundle\Exception;
 
+/**
+ * Class Data
+ *
+ * @method getContainerDefinedArguments
+ * @method getClassDefinedArguments
+ * @method getDifference
+ */
 class Data
 {
     /**
