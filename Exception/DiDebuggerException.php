@@ -72,4 +72,13 @@ class DiDebuggerException extends \Exception
             $this->factoryMethod
         );
     }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        $refl = new \ReflectionClass($this);
+        return $refl->getShortName();
+    }
 }
