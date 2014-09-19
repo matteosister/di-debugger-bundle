@@ -4,6 +4,7 @@ namespace Cypress\DiDebuggerBundle\Command;
 
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
+use Cypress\DiDebuggerBundle\Checker\Checker\UnusedArgumentChecker;
 use Cypress\DiDebuggerBundle\Checker\Service;
 use Cypress\DiDebuggerBundle\Checker\ServiceCollection;
 use Cypress\DiDebuggerBundle\Exception\Data;
@@ -47,11 +48,12 @@ class DiDebugCommand extends ContainerAwareCommand
         $serviceCollection = new ServiceCollection($this->getContainer(), $serviceIds);
         $serviceCollection->addChecker(new ClassChecker());
         $serviceCollection->addChecker(new ArgumentsCountChecker());
+        $serviceCollection->addChecker(new UnusedArgumentChecker());
         $errors = $serviceCollection->check();
         /** @var DiDebuggerException $error */
         foreach ($errors as $i => $error) {
             $data = $error->getData();
-            $output->writeln(sprintf('<fg=white>SERVICE: <error>%s</error></fg=white>', $data->getServiceName()));
+            $output->writeln(sprintf('<fg=white>SERVICE:</fg=white> <fg=yellow;bg=black>%s</fg=yellow;bg=black>', $data->getServiceName()));
             switch (true) {
                 case $error instanceof WrongParametersCount:
                     $solution = $this->handleWrongParametersCount($output, $error, $data);
@@ -78,10 +80,12 @@ class DiDebugCommand extends ContainerAwareCommand
             $output->writeln('');
             $output->writeln('');
         }
+        $output->writeln(sprintf('<info>%s services analyzed</info>', count($serviceCollection)));
         if (count($errors)) {
-            $output->writeln(sprintf('<info>%s</info> problems found', count($errors)));
+            $tpl = count($errors) === 1 ? '<error>%s</error> problem found' : '<error>%s</error> problems found';
+            $output->writeln(sprintf($tpl, count($errors)));
         } else {
-            $output->writeln(sprintf('<info>%s</info> problems found. <info>Well done!</info>', count($errors)));
+            $output->writeln(sprintf('<error>%s</error> problems found. <info>Well done!</info>', count($errors)));
         }
     }
 
@@ -99,14 +103,14 @@ class DiDebugCommand extends ContainerAwareCommand
         $solution = null;
         /** @var TableHelper $table */
         $table = $this->getHelper('table');
-        $table->setCrossingChar('<fg=red>.</fg=red>');
+        $table->setCrossingChar('<fg=white>.</fg=white>');
         $table->setHorizontalBorderChar('<fg=black>.</fg=black>');
         $table->setVerticalBorderChar('');
         $table->setCellHeaderFormat('<fg=blue>%s</fg=blue>');
         $table->setHeaders(array('container defined arguments', 'service parameters'));
         $containerDefined = array_map(function ($name) {
             if (is_array($name)) {
-                return 'arr';
+                return 'array';
             }
             return "" === $name ? self::EMPTY_ARGUMENT : $name;
         }, $data->getContainerDefinedArguments());

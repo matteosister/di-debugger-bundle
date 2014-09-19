@@ -23,6 +23,9 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
      */
     public function check()
     {
+        if ($this->sd->isAlias() || $this->sd->isSynthetic()) {
+            return;
+        }
         $className = $this->getRealClassName($this->sd->getDefinition()->getClass());
         $refl = new \ReflectionClass($className);
         $filename = $refl->getFileName();
@@ -31,6 +34,9 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
         }
         $this->fileContent = file_get_contents($filename);
         $constr = $refl->getConstructor();
+        if (is_null($constr)) {
+            return;
+        }
         /** @var \ReflectionParameter $param */
         foreach ($constr->getParameters() as $param) {
             if ($this->isNotUsed($param->getName())) {
