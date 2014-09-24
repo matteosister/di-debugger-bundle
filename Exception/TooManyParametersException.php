@@ -4,7 +4,7 @@ namespace Cypress\DiDebuggerBundle\Exception;
 
 use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 
-class TooManyParameters extends WrongParametersCount
+class TooManyParametersException extends WrongParametersCountException
 {
     public function setServiceDescriptor(ServiceDescriptor $sd)
     {

@@ -5,11 +5,11 @@ namespace Spec\Cypress\DiDebuggerBundle\Exception;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class WrongParametersCountSpec extends ObjectBehavior
+class WrongParametersCountExceptionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Cypress\DiDebuggerBundle\Exception\WrongParametersCount');
+        $this->shouldHaveType('Cypress\DiDebuggerBundle\Exception\WrongParametersCountException');
     }
 
     function it_extends_exception()

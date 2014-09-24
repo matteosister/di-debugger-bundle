@@ -53,7 +53,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service1');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParameters')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParametersException')
             ->duringCheck();
     }
 
@@ -67,7 +67,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service3');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyParameters')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooManyParametersException')
             ->duringCheck();
     }
 
@@ -75,7 +75,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service4');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParameters')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\TooFewParametersException')
             ->duringCheck();
     }
 
@@ -83,7 +83,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service5');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgument')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgumentException')
             ->duringCheck();
     }
 
@@ -91,7 +91,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $this->setServiceName('service6');
         $this
-            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgument')
+            ->shouldThrow('Cypress\DiDebuggerBundle\Exception\UnusedArgumentException')
             ->duringCheck();
     }
 }

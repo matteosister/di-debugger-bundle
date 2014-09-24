@@ -85,7 +85,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooFewParameters" error
+    Then I should get "TooFewParametersException" error
 
   Scenario: Service definition with more parameters than the factory class method
     Given I have a container definition file
@@ -103,7 +103,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooManyParameters" error
+    Then I should get "TooManyParametersException" error
 
   Scenario: Service definition with more parameters than the factory service method
     Given I have a container definition file
@@ -122,7 +122,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooManyParameters" error
+    Then I should get "TooManyParametersException" error
 
   Scenario: Service definition with less parameters than the factory service method
     Given I have a container definition file
@@ -138,7 +138,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooFewParameters" error
+    Then I should get "TooFewParametersException" error
 
   Scenario: Service definition with less parameters than the constructor function
     Given I have a container definition file
@@ -152,7 +152,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooFewParameters" error
+    Then I should get "TooFewParametersException" error
 
   Scenario: Service definition with more parameters than the constructor function
     Given I have a container definition file
@@ -169,7 +169,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "ArgumentsCountChecker" cheker
     When I check the service "service2"
-    Then I should get "TooManyParameters" error
+    Then I should get "TooManyParametersException" error
 
   Scenario: Service definition with correct args, but unused
     Given I have a container definition file
@@ -185,7 +185,7 @@ Feature: DiDebuggerBundle
       """
     And I add the "UnusedArgumentChecker" cheker
     When I check the service "service2"
-    Then I should get "UnusedArgument" error
+    Then I should get "UnusedArgumentException" error
 
   Scenario: Service definition with correct args, all used
     Given I have a container definition file

@@ -2,9 +2,7 @@
 
 namespace Cypress\DiDebuggerBundle\Exception;
 
-use Exception;
-
-class WrongParametersCount extends DiDebuggerException
+class WrongParametersCountException extends DiDebuggerException
 {
     /**
      * @var array

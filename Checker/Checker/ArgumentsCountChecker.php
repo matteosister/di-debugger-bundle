@@ -12,17 +12,15 @@ use Cypress\DiDebuggerBundle\Checker\ServiceDescriptor;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryServiceMethodException;
-use Cypress\DiDebuggerBundle\Exception\TooFewConstructorCountArguments;
-use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
-use Cypress\DiDebuggerBundle\Exception\TooManyConstructorCountArguments;
-use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
+use Cypress\DiDebuggerBundle\Exception\TooFewParametersException;
+use Cypress\DiDebuggerBundle\Exception\TooManyParametersException;
 
 class ArgumentsCountChecker extends BaseChecker implements Checker
 {
     /**
      * @throws NonExistentFactoryMethodException
-     * @throws TooFewParameters
-     * @throws TooManyParameters
+     * @throws TooFewParametersException
+     * @throws TooManyParametersException
      * @return void
      */
     public function check()
@@ -96,21 +94,21 @@ class ArgumentsCountChecker extends BaseChecker implements Checker
      * @param ServiceDescriptor $sd
      * @param array $definitionArguments
      * @param \ReflectionParameter[] $methodParameters
-     * @throws TooFewParameters
-     * @throws TooManyParameters
+     * @throws TooFewParametersException
+     * @throws TooManyParametersException
      */
     private function compare(ServiceDescriptor $sd, $definitionArguments, $methodParameters) {
         $min = array_reduce($methodParameters, function ($min, \ReflectionParameter $parameter) {
             return $parameter->isOptional() ? $min : $min + 1;
         });
         if (count($definitionArguments) > count($methodParameters)) {
-            $e = new TooManyParameters();
+            $e = new TooManyParametersException();
             $e->setServiceDescriptor($sd);
             $e->setArguments($definitionArguments, $methodParameters);
             throw $e;
         }
         if (count($definitionArguments) < $min) {
-            $e = new TooFewParameters();
+            $e = new TooFewParametersException();
             $e->setServiceDescriptor($sd);
             $e->setArguments($definitionArguments, $methodParameters);
             throw $e;

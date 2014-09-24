@@ -8,7 +8,7 @@
 
 namespace Cypress\DiDebuggerBundle\Checker\Checker;
 
-use Cypress\DiDebuggerBundle\Exception\UnusedArgument;
+use Cypress\DiDebuggerBundle\Exception\UnusedArgumentException;
 
 class UnusedArgumentChecker extends BaseChecker implements Checker
 {
@@ -18,7 +18,7 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
     private $fileContent;
 
     /**
-     * @throws UnusedArgument
+     * @throws UnusedArgumentException
      * @return void
      */
     public function check()
@@ -40,7 +40,7 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
         /** @var \ReflectionParameter $param */
         foreach ($constr->getParameters() as $param) {
             if ($this->isNotUsed($param->getName())) {
-                $e = new UnusedArgument();
+                $e = new UnusedArgumentException();
                 $e->setServiceDescriptor($this->sd);
                 throw $e;
             }

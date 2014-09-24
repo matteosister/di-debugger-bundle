@@ -5,7 +5,6 @@ namespace Cypress\DiDebuggerBundle\Command;
 use Cypress\DiDebuggerBundle\Checker\Checker\ArgumentsCountChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\ClassChecker;
 use Cypress\DiDebuggerBundle\Checker\Checker\UnusedArgumentChecker;
-use Cypress\DiDebuggerBundle\Checker\Service;
 use Cypress\DiDebuggerBundle\Checker\ServiceCollection;
 use Cypress\DiDebuggerBundle\Exception\Data;
 use Cypress\DiDebuggerBundle\Exception\DiDebuggerException;
@@ -13,9 +12,10 @@ use Cypress\DiDebuggerBundle\Exception\NonExistentClassException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryClassException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryMethodException;
 use Cypress\DiDebuggerBundle\Exception\NonExistentFactoryServiceMethodException;
-use Cypress\DiDebuggerBundle\Exception\TooFewParameters;
-use Cypress\DiDebuggerBundle\Exception\TooManyParameters;
-use Cypress\DiDebuggerBundle\Exception\WrongParametersCount;
+use Cypress\DiDebuggerBundle\Exception\TooFewParametersException;
+use Cypress\DiDebuggerBundle\Exception\TooManyParametersException;
+use Cypress\DiDebuggerBundle\Exception\UnusedArgumentException;
+use Cypress\DiDebuggerBundle\Exception\WrongParametersCountException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -53,9 +53,12 @@ class DiDebugCommand extends ContainerAwareCommand
         /** @var DiDebuggerException $error */
         foreach ($errors as $i => $error) {
             $data = $error->getData();
-            $output->writeln(sprintf('<fg=white>SERVICE:</fg=white> <fg=yellow;bg=black>%s</fg=yellow;bg=black>', $data->getServiceName()));
+            $output->writeln(sprintf(
+                '<fg=white>SERVICE:</fg=white> <fg=yellow;bg=black>%s</fg=yellow;bg=black>',
+                $data->getServiceName()
+            ));
             switch (true) {
-                case $error instanceof WrongParametersCount:
+                case $error instanceof WrongParametersCountException:
                     $solution = $this->handleWrongParametersCount($output, $error, $data);
                     break;
                 case $error instanceof NonExistentClassException:
@@ -69,6 +72,9 @@ class DiDebugCommand extends ContainerAwareCommand
                     break;
                 case $error instanceof NonExistentFactoryServiceMethodException:
                     $solution = $this->handleNonExistentFactoryServiceMethodException($output, $data);
+                    break;
+                case $error instanceof UnusedArgumentException:
+                    $solution = $this->handleUnusedArgumentException($output, $data);
                     break;
                 default:
                     $solution = null;
@@ -91,13 +97,13 @@ class DiDebugCommand extends ContainerAwareCommand
 
     /**
      * @param OutputInterface $output
-     * @param WrongParametersCount $error
+     * @param WrongParametersCountException $error
      * @param Data $data
      * @return string
      */
     protected function handleWrongParametersCount(
         OutputInterface $output,
-        WrongParametersCount $error,
+        WrongParametersCountException $error,
         Data $data
     ) {
         $solution = null;
@@ -129,10 +135,10 @@ class DiDebugCommand extends ContainerAwareCommand
         }
         $table->setRows($rows);
         $table->render($output);
-        if ($error instanceof TooManyParameters) {
+        if ($error instanceof TooManyParametersException) {
             $solution = sprintf('Change the service definition, remove %s arguments', $data->getDifference());
         }
-        if ($error instanceof TooFewParameters) {
+        if ($error instanceof TooFewParametersException) {
             $solution = sprintf('Change the service definition, add %s arguments', $data->getDifference());
             return $solution;
         }
@@ -189,6 +195,17 @@ class DiDebugCommand extends ContainerAwareCommand
         $solution = 'The method defined for the factory service do not exists. Implement it!';
         $output->writeln(sprintf('Factory Service: <comment>%s</comment>', $data->getFactoryService()));
         $output->writeln(sprintf('Factory Method: <comment>%s</comment>', $data->getFactoryMethod()));
+        return $solution;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param Data $data
+     * @return string
+     */
+    protected function handleUnusedArgumentException(OutputInterface $output, Data $data)
+    {
+        $solution = '';
         return $solution;
     }
 } 
