@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class DiDebugCommand extends ContainerAwareCommand
@@ -31,7 +32,15 @@ class DiDebugCommand extends ContainerAwareCommand
     {
         $this
             ->setName('cypress:di:debug')
-            ->addArgument('service_name', InputArgument::OPTIONAL, 'check only for the given service');
+            ->setDescription('Debug the service container')
+            ->addArgument('service_name', InputArgument::OPTIONAL, 'check only for the given service')
+            ->addOption(
+                'pattern',
+                'p',
+                InputOption::VALUE_OPTIONAL,
+                'pattern to match for selecting the services to check',
+                '.*'
+            );
     }
 
     /**
@@ -45,10 +54,10 @@ class DiDebugCommand extends ContainerAwareCommand
         if ($serviceName = $input->getArgument('service_name')) {
             $serviceIds = array($serviceName);
         }
-        $serviceCollection = new ServiceCollection($this->getContainer(), $serviceIds);
+        $serviceCollection = new ServiceCollection($this->getContainer(), $serviceIds, $input->getOption('pattern'));
         $serviceCollection->addChecker(new ClassChecker());
         $serviceCollection->addChecker(new ArgumentsCountChecker());
-        $serviceCollection->addChecker(new UnusedArgumentChecker());
+        //$serviceCollection->addChecker(new UnusedArgumentChecker());
         $errors = $serviceCollection->check();
         /** @var DiDebuggerException $error */
         foreach ($errors as $i => $error) {
@@ -74,7 +83,7 @@ class DiDebugCommand extends ContainerAwareCommand
                     $solution = $this->handleNonExistentFactoryServiceMethodException($output, $data);
                     break;
                 case $error instanceof UnusedArgumentException:
-                    $solution = $this->handleUnusedArgumentException($output, $data);
+                    $solution = $this->handleUnusedArgumentException($output, $error, $data);
                     break;
                 default:
                     $solution = null;
@@ -200,12 +209,20 @@ class DiDebugCommand extends ContainerAwareCommand
 
     /**
      * @param OutputInterface $output
+     * @param UnusedArgumentException $error
      * @param Data $data
      * @return string
      */
-    protected function handleUnusedArgumentException(OutputInterface $output, Data $data)
-    {
-        $solution = '';
+    protected function handleUnusedArgumentException(
+        OutputInterface $output,
+        UnusedArgumentException $error,
+        Data $data
+    ) {
+        $solution = sprintf(
+            'The service is correctly configured, but the <comment>%s</comment> parameter seems not used inside the class. Check it out!',
+            $error->getUnusedParameterName()
+        );
+
         return $solution;
     }
 } 

@@ -26,10 +26,16 @@ class ServiceCollection implements \Countable
     private $serviceIds;
 
     /**
+     * @var
+     */
+    private $pattern;
+
+    /**
      * @param ContainerInterface $container
      * @param array $serviceIds
+     * @param $pattern
      */
-    public function __construct(ContainerInterface $container, array $serviceIds = null)
+    public function __construct(ContainerInterface $container, array $serviceIds = null, $pattern)
     {
         $this->serviceChecker = new Service();
         $this->serviceChecker->setContainer($container);
@@ -38,6 +44,7 @@ class ServiceCollection implements \Countable
         } else {
             $this->serviceIds = $serviceIds;
         }
+        $this->pattern = $pattern;
     }
 
     /**
@@ -55,6 +62,9 @@ class ServiceCollection implements \Countable
     {
         $exceptions = array();
         foreach ($this->serviceIds as $serviceId) {
+            if (0 === preg_match(sprintf('/%s/', $this->pattern), $serviceId)) {
+                continue;
+            }
             $this->serviceChecker->setServiceName($serviceId);
             try {
                 $this->serviceChecker->check();
@@ -63,6 +73,13 @@ class ServiceCollection implements \Countable
             }
         }
         return $exceptions;
+    }
+
+    private function getFilteredServiceIds()
+    {
+        return array_filter($this->serviceIds, function($serviceId) {
+            return 1 === preg_match(sprintf('/%s/', $this->pattern), $serviceId);
+        });
     }
 
     /**
@@ -76,6 +93,7 @@ class ServiceCollection implements \Countable
      */
     public function count()
     {
-        return count($this->serviceIds);
+
+        return count($this->getFilteredServiceIds());
     }
 }

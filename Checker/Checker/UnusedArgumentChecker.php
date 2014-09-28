@@ -42,6 +42,7 @@ class UnusedArgumentChecker extends BaseChecker implements Checker
             if ($this->isNotUsed($param->getName())) {
                 $e = new UnusedArgumentException();
                 $e->setServiceDescriptor($this->sd);
+                $e->setUnusedParameterName($param->getName());
                 throw $e;
             }
         }
